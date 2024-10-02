@@ -1,27 +1,38 @@
 #include <iostream>
+#include <deque>
 #include <vector>
 using namespace std;
 
-// Function to compute the prefix sum array
-vector<int> computePrefixSum(const vector<int>& arr) {
-    int n = arr.size();
-    vector<int> prefixSum(n + 1, 0);
+// Function to find the maximum in each sliding window of size k
+vector<int> slidingWindowMax(const vector<int>& arr, int k) {
+    deque<int> dq;  // Deque to store indexes of elements in the window
+    vector<int> result;
 
-    // Calculating prefix sum array where prefixSum[i] = sum of elements from arr[0] to arr[i-1]
-    for (int i = 1; i <= n; ++i) {
-        prefixSum[i] = prefixSum[i - 1] + arr[i - 1];
+    for (int i = 0; i < arr.size(); ++i) {
+        // Remove elements from the front if they are out of this window
+        if (!dq.empty() && dq.front() < i - k + 1) {
+            dq.pop_front();
+        }
+
+        // Remove elements from the back while they are smaller than the current element
+        while (!dq.empty() && arr[dq.back()] < arr[i]) {
+            dq.pop_back();
+        }
+
+        // Add the current element index at the back of the deque
+        dq.push_back(i);
+
+        // If the window has reached size k, add the front element of deque to the result
+        if (i >= k - 1) {
+            result.push_back(arr[dq.front()]);
+        }
     }
 
-    return prefixSum;
-}
-
-// Function to get sum of elements in range [L, R] using prefix sum
-int getRangeSum(const vector<int>& prefixSum, int L, int R) {
-    return prefixSum[R + 1] - prefixSum[L];
+    return result;
 }
 
 int main() {
-    int n;
+    int n, k;
     cout << "Enter the number of elements in array: ";
     cin >> n;
 
@@ -31,20 +42,16 @@ int main() {
         cin >> arr[i];
     }
 
-    // Compute prefix sum array
-    vector<int> prefixSum = computePrefixSum(arr);
+    cout << "Enter the size of sliding window (k): ";
+    cin >> k;
 
-    // Answering queries
-    int q;
-    cout << "Enter number of queries: ";
-    cin >> q;
+    vector<int> result = slidingWindowMax(arr, k);
 
-    while (q--) {
-        int L, R;
-        cout << "Enter range (L, R): ";
-        cin >> L >> R;
-        cout << "Sum of elements in range [" << L << ", " << R << "] is: " << getRangeSum(prefixSum, L, R) << endl;
+    cout << "Maximum values in each sliding window of size " << k << ":\n";
+    for (int i : result) {
+        cout << i << " ";
     }
+    cout << endl;
 
     return 0;
 }
