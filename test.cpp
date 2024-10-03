@@ -3,50 +3,44 @@
 #include <algorithm>
 using namespace std;
 
-// Function to find if there exists a pair with a given sum using Two Pointer Technique
-bool hasPairWithSum(const vector<int>& arr, int target) {
-    int left = 0;           // Initialize the left pointer
-    int right = arr.size() - 1; // Initialize the right pointer
+// Function to merge overlapping intervals
+vector<pair<int, int>> mergeIntervals(vector<pair<int, int>>& intervals) {
+    // Sort intervals based on the starting point of each interval
+    sort(intervals.begin(), intervals.end());
 
-    while (left < right) {
-        int currentSum = arr[left] + arr[right];
+    vector<pair<int, int>> merged;
 
-        // If the current sum is equal to the target, return true
-        if (currentSum == target) {
-            return true;
-        }
-        // If current sum is less than the target, move the left pointer rightward
-        else if (currentSum < target) {
-            left++;
-        }
-        // If current sum is greater than the target, move the right pointer leftward
-        else {
-            right--;
+    for (auto& interval : intervals) {
+        // If the merged vector is empty or there's no overlap
+        if (merged.empty() || merged.back().second < interval.first) {
+            merged.push_back(interval);
+        } else {
+            // Merge overlapping intervals
+            merged.back().second = max(merged.back().second, interval.second);
         }
     }
 
-    return false; // No pair found
+    return merged;
 }
 
 int main() {
-    int n, target;
-    cout << "Enter the number of elements in array: ";
+    int n;
+    cout << "Enter the number of intervals: ";
     cin >> n;
 
-    vector<int> arr(n);
-    cout << "Enter " << n << " sorted elements:\n";
+    vector<pair<int, int>> intervals(n);
+    cout << "Enter " << n << " intervals (start and end):\n";
     for (int i = 0; i < n; ++i) {
-        cin >> arr[i];
+        cin >> intervals[i].first >> intervals[i].second;
     }
 
-    cout << "Enter target sum: ";
-    cin >> target;
+    vector<pair<int, int>> merged = mergeIntervals(intervals);
 
-    if (hasPairWithSum(arr, target)) {
-        cout << "Yes, there is a pair with the given sum.\n";
-    } else {
-        cout << "No, there is no pair with the given sum.\n";
+    cout << "Merged intervals:\n";
+    for (auto& interval : merged) {
+        cout << "[" << interval.first << ", " << interval.second << "] ";
     }
+    cout << endl;
 
     return 0;
 }
