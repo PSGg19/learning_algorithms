@@ -1,57 +1,52 @@
 #include <iostream>
-#include <deque>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-// Function to find the maximum in each sliding window of size k
-vector<int> slidingWindowMax(const vector<int>& arr, int k) {
-    deque<int> dq;  // Deque to store indexes of elements in the window
-    vector<int> result;
+// Function to find if there exists a pair with a given sum using Two Pointer Technique
+bool hasPairWithSum(const vector<int>& arr, int target) {
+    int left = 0;           // Initialize the left pointer
+    int right = arr.size() - 1; // Initialize the right pointer
 
-    for (int i = 0; i < arr.size(); ++i) {
-        // Remove elements from the front if they are out of this window
-        if (!dq.empty() && dq.front() < i - k + 1) {
-            dq.pop_front();
+    while (left < right) {
+        int currentSum = arr[left] + arr[right];
+
+        // If the current sum is equal to the target, return true
+        if (currentSum == target) {
+            return true;
         }
-
-        // Remove elements from the back while they are smaller than the current element
-        while (!dq.empty() && arr[dq.back()] < arr[i]) {
-            dq.pop_back();
+        // If current sum is less than the target, move the left pointer rightward
+        else if (currentSum < target) {
+            left++;
         }
-
-        // Add the current element index at the back of the deque
-        dq.push_back(i);
-
-        // If the window has reached size k, add the front element of deque to the result
-        if (i >= k - 1) {
-            result.push_back(arr[dq.front()]);
+        // If current sum is greater than the target, move the right pointer leftward
+        else {
+            right--;
         }
     }
 
-    return result;
+    return false; // No pair found
 }
 
 int main() {
-    int n, k;
+    int n, target;
     cout << "Enter the number of elements in array: ";
     cin >> n;
 
     vector<int> arr(n);
-    cout << "Enter " << n << " elements:\n";
+    cout << "Enter " << n << " sorted elements:\n";
     for (int i = 0; i < n; ++i) {
         cin >> arr[i];
     }
 
-    cout << "Enter the size of sliding window (k): ";
-    cin >> k;
+    cout << "Enter target sum: ";
+    cin >> target;
 
-    vector<int> result = slidingWindowMax(arr, k);
-
-    cout << "Maximum values in each sliding window of size " << k << ":\n";
-    for (int i : result) {
-        cout << i << " ";
+    if (hasPairWithSum(arr, target)) {
+        cout << "Yes, there is a pair with the given sum.\n";
+    } else {
+        cout << "No, there is no pair with the given sum.\n";
     }
-    cout << endl;
 
     return 0;
 }
