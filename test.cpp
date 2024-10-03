@@ -1,46 +1,26 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
-// Function to merge overlapping intervals
-vector<pair<int, int>> mergeIntervals(vector<pair<int, int>>& intervals) {
-    // Sort intervals based on the starting point of each interval
-    sort(intervals.begin(), intervals.end());
-
-    vector<pair<int, int>> merged;
-
-    for (auto& interval : intervals) {
-        // If the merged vector is empty or there's no overlap
-        if (merged.empty() || merged.back().second < interval.first) {
-            merged.push_back(interval);
-        } else {
-            // Merge overlapping intervals
-            merged.back().second = max(merged.back().second, interval.second);
-        }
+int findLargest(const vector<int>& arr) {
+    int largest = arr[0];
+    for (int i = 1; i < arr.size(); ++i) {
+        if (arr[i] > largest)
+            largest = arr[i];
     }
-
-    return merged;
+    return largest;
 }
 
 int main() {
     int n;
-    cout << "Enter the number of intervals: ";
+    cout << "Enter size of array: ";
     cin >> n;
 
-    vector<pair<int, int>> intervals(n);
-    cout << "Enter " << n << " intervals (start and end):\n";
-    for (int i = 0; i < n; ++i) {
-        cin >> intervals[i].first >> intervals[i].second;
-    }
+    vector<int> arr(n);
+    cout << "Enter elements: ";
+    for (int i = 0; i < n; ++i)
+        cin >> arr[i];
 
-    vector<pair<int, int>> merged = mergeIntervals(intervals);
-
-    cout << "Merged intervals:\n";
-    for (auto& interval : merged) {
-        cout << "[" << interval.first << ", " << interval.second << "] ";
-    }
-    cout << endl;
-
+    cout << "Largest element is: " << findLargest(arr) << endl;
     return 0;
 }
