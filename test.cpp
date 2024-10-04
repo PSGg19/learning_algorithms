@@ -2,13 +2,17 @@
 #include <vector>
 using namespace std;
 
-int findLargest(const vector<int>& arr) {
-    int largest = arr[0];
-    for (int i = 1; i < arr.size(); ++i) {
-        if (arr[i] > largest)
-            largest = arr[i];
+int findSecondLargest(const vector<int>& arr) {
+    int largest = INT_MIN, second = INT_MIN;
+    for (int num : arr) {
+        if (num > largest) {
+            second = largest;
+            largest = num;
+        } else if (num > second && num != largest) {
+            second = num;
+        }
     }
-    return largest;
+    return (second == INT_MIN) ? -1 : second;
 }
 
 int main() {
@@ -21,6 +25,11 @@ int main() {
     for (int i = 0; i < n; ++i)
         cin >> arr[i];
 
-    cout << "Largest element is: " << findLargest(arr) << endl;
+    int second = findSecondLargest(arr);
+    if (second == -1)
+        cout << "No second largest element.\n";
+    else
+        cout << "Second largest element is: " << second << endl;
+
     return 0;
 }
