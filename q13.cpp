@@ -26,8 +26,9 @@ int main() {
     cout << "Enter elements (can be negative/positive): ";
     for (int i = 0; i < n; ++i)
         cin >> arr[i];
-    //cout << "Enter target sum K: ";
+    cout << "Enter target sum K: ";
     cin >> k;
+    cout<<"anything";
 
     //cout << "Longest subarray length with sum " << k << " is: " << longestSubarraySumK(arr, k) << endl;
     return 0;
