@@ -29,6 +29,6 @@ int main() {
     cout << "Enter target sum K: ";
     cin >> k;
 
-    cout << "Longest subarray length with sum " << k << " is: " << longestSubarraySumK(arr, k) << endl;
+    //cout << "Longest subarray length with sum " << k << " is: " << longestSubarraySumK(arr, k) << endl;
     return 0;
 }
