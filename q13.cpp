@@ -20,7 +20,7 @@ int longestSubarraySumK(vector<int>& arr, int k) {
 
 int main() {
     int n, k;
-    cout << "Enter size of array: ";
+    //cout << "Enter size of array: ";
     cin >> n;
     vector<int> arr(n);
     cout << "Enter elements (can be negative/positive): ";
